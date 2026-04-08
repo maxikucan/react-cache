@@ -1,5 +1,7 @@
 # react-cache
 
+See demo in Vercel: [https://react-cache.vercel.app/](https://react-cache.vercel.app/)
+
 > ⚠️ Work in progress — learning experiment.
 
 A small React app built to explore a custom in-memory caching hook.

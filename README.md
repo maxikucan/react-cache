@@ -1,73 +1,34 @@
-# React + TypeScript + Vite
+# react-cache
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> ⚠️ Work in progress — learning experiment.
 
-Currently, two official plugins are available:
+A small React app built to explore a custom in-memory caching hook.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What it does
 
-## React Compiler
+- Fetches a list of users from [JSONPlaceholder](https://jsonplaceholder.typicode.com/users)
+- Caches the response in memory using a custom `useCache` hook
+- Navigates to a detail page per user via React Router
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## useCache
 
-## Expanding the ESLint configuration
+The core of the experiment lives in `src/hooks/useCache.ts`.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Stores fetched data in a module-level `Map` keyed by a string
+- Each entry has an expiry timestamp (default TTL: 5 minutes)
+- On subsequent renders, serves cached data if still valid — skipping the network request
+- Accepts an optional `ttl` (ms) to override the default
 
-```js
-export default defineConfig([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			// Other configs...
-
-			// Remove tseslint.configs.recommended and replace with this
-			tseslint.configs.recommendedTypeChecked,
-			// Alternatively, use this for stricter rules
-			tseslint.configs.strictTypeChecked,
-			// Optionally, add this for stylistic rules
-			tseslint.configs.stylisticTypeChecked
-
-			// Other configs...
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ['./tsconfig.node.json', './tsconfig.app.json'],
-				tsconfigRootDir: import.meta.dirname
-			}
-			// other options...
-		}
-	}
-]);
+```ts
+const { data, error, isLoading } = useCache<User[]>({
+	key: 'users',
+	fetcher: fetchUsers,
+	options: { ttl: 60_000 } // optional, defaults to 5 min
+});
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default defineConfig([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			// Other configs...
-			// Enable lint rules for React
-			reactX.configs['recommended-typescript'],
-			// Enable lint rules for React DOM
-			reactDom.configs.recommended
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ['./tsconfig.node.json', './tsconfig.app.json'],
-				tsconfigRootDir: import.meta.dirname
-			}
-			// other options...
-		}
-	}
-]);
-```
+- React + TypeScript
+- Vite
+- React Router

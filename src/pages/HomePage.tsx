@@ -1,7 +1,8 @@
 import { Link } from 'react-router';
 
 import { useCache } from '../hooks/useCache';
-import { fetchUsers, type User } from '../service/users';
+import { fetchUsers } from '../service/users';
+import type { User } from '../types/user';
 
 export function HomePage() {
 	const { data, error, isLoading } = useCache<User[]>({ key: 'users', fetcher: fetchUsers });

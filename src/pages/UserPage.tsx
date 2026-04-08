@@ -1,7 +1,8 @@
 import { Link, useParams } from 'react-router';
 
 import { useCache } from '../hooks/useCache';
-import { fetchUsers, type User } from '../service/users';
+import { fetchUsers } from '../service/users';
+import type { User } from '../types/user';
 
 export function UserPage() {
 	const { userId } = useParams();

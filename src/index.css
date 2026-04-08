@@ -1,0 +1,109 @@
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+html {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background: #f5f5f5;
+	color: #111;
+}
+
+.page {
+	max-width: 480px;
+	margin: 64px auto;
+	padding: 0 16px;
+}
+
+.page h1 {
+	font-size: 1.4rem;
+	font-weight: 600;
+	margin-bottom: 24px;
+	color: #222;
+}
+
+.user-list {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.user-list li a {
+	display: block;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	text-decoration: none;
+	color: #333;
+	transition:
+		background 0.15s,
+		border-color 0.15s;
+}
+
+.user-list li a:hover {
+	background: #f0f4ff;
+	border-color: #a0b4f0;
+	color: #1a3acc;
+}
+
+.status {
+	padding: 12px 16px;
+	border-radius: 8px;
+	margin-bottom: 16px;
+	font-size: 0.9rem;
+}
+
+.status.loading {
+	background: #eef2ff;
+	color: #3451b2;
+}
+
+.status.error {
+	background: #fff0f0;
+	color: #c0392b;
+}
+
+.user-card {
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 10px;
+	padding: 24px;
+}
+
+.user-card h2 {
+	font-size: 1.2rem;
+	font-weight: 600;
+	margin-bottom: 16px;
+}
+
+.user-details {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 8px 16px;
+	font-size: 0.9rem;
+}
+
+.user-details dt {
+	color: #888;
+	font-weight: 500;
+}
+
+.user-details dd a {
+	color: #1a3acc;
+	text-decoration: none;
+}
+
+.back-link {
+	display: inline-block;
+	margin-top: 16px;
+	font-size: 0.85rem;
+	color: #555;
+	text-decoration: none;
+}
+
+.back-link:hover {
+	color: #1a3acc;
+}

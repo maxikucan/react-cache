@@ -43,7 +43,10 @@ export function useCache<T>(params: IUseCacheParams<T>): IUseCacheReturn<T> {
 				if (isMountedRef.current) {
 					setData(cachedEntry.data);
 					setError(null);
-					addLog(`[${params.key}] Using cached data.`, 'cache');
+					addLog(
+						`[${params.key}] Using cached data - Valid until ${new Date(cachedEntry.expiry).toLocaleTimeString([], { hour12: false })}.`,
+						'cache'
+					);
 				}
 
 				return;

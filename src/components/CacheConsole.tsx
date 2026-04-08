@@ -13,8 +13,8 @@ export function CacheConsole({ logs }: { logs: LogEntry[] }) {
 	}, [logs]);
 
 	const levelColors: Record<LogLevel, string> = {
-		cache: '#4ade80', // green  – served from cache
-		fetch: '#60a5fa', // blue   – fresh fetch
+		cache: '#4ade80', // green – served from cache
+		fetch: '#60a5fa', // blue – fresh fetch
 		refetch: '#f97316' // orange – forced refetch
 	};
 
@@ -27,7 +27,7 @@ export function CacheConsole({ logs }: { logs: LogEntry[] }) {
 				zIndex: 9999,
 				fontFamily: 'monospace',
 				fontSize: '12px',
-				width: '320px',
+				width: '440px',
 				maxHeight: '560px'
 			}}>
 			{/* Header / toggle */}

@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { useCacheLog } from '../context/CacheLogContext';
 
 interface IUseCacheParams<T> {
 	key: string;
@@ -10,6 +12,7 @@ interface IUseCacheReturn<T> {
 	data: T | null;
 	error: string | null;
 	isLoading: boolean;
+	refetch: () => Promise<void>;
 }
 
 type Options = {
@@ -28,40 +31,43 @@ export function useCache<T>(params: IUseCacheParams<T>): IUseCacheReturn<T> {
 	const [data, setData] = useState<T | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const isMountedRef = useRef<boolean>(false);
+	const { addLog } = useCacheLog();
 
-	useEffect(() => {
-		let isMounted = true;
-
-		async function fetchData() {
+	const fetchData = useCallback(
+		// Force ignores cache and fetches fresh data, otherwise it checks cache first
+		async (force = false) => {
 			const cachedEntry = cache.get(params.key) as CacheEntry<T> | undefined;
 
-			if (cachedEntry && cachedEntry.expiry > Date.now()) {
-				console.log('Using cached data.');
-				setData(cachedEntry.data);
-				setError(null);
+			if (!force && cachedEntry && cachedEntry.expiry > Date.now()) {
+				if (isMountedRef.current) {
+					setData(cachedEntry.data);
+					setError(null);
+					addLog(`[${params.key}] Using cached data.`, 'cache');
+				}
 
 				return;
 			}
 
-			setIsLoading(true);
-			setError(null);
+			if (isMountedRef.current) {
+				setIsLoading(true);
+				setError(null);
+			}
 
 			try {
 				const result = await params.fetcher();
-
-				if (!isMounted) {
-					return;
-				}
 
 				cache.set(params.key, {
 					data: result,
 					expiry: Date.now() + (params.options?.ttl || DEFAULT_TTL)
 				});
 
-				console.log('Using new fetched data.');
-				setData(result);
+				if (isMountedRef.current) {
+					addLog(`[${params.key}] ${force ? 'Re-fetched data.' : 'Using new fetched data.'}`, force ? 'refetch' : 'fetch');
+					setData(result);
+				}
 			} catch (err: unknown) {
-				if (!isMounted) {
+				if (!isMountedRef.current) {
 					return;
 				}
 
@@ -71,24 +77,33 @@ export function useCache<T>(params: IUseCacheParams<T>): IUseCacheReturn<T> {
 					setError('An error occurred while fetching data.');
 				}
 			} finally {
-				if (isMounted) {
+				if (isMountedRef.current) {
 					setIsLoading(false);
 				}
 			}
-		}
+		},
 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[params.key, params.fetcher, params.options?.ttl]
+	);
+
+	const refetch = useCallback(async () => {
+		await fetchData(true);
+	}, [fetchData]);
+
+	useEffect(() => {
+		isMountedRef.current = true;
 		fetchData();
 
 		return () => {
-			isMounted = false;
+			isMountedRef.current = false;
 		};
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [params.key, params.options?.ttl]);
+	}, [fetchData]);
 
 	return {
 		data: data,
 		error: error,
-		isLoading: isLoading
+		isLoading: isLoading,
+		refetch: refetch
 	};
 }

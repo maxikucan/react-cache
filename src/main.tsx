@@ -8,13 +8,15 @@ import { CacheLogProvider } from './context/CacheLogContext.tsx';
 import { HomePage } from './pages/HomePage.tsx';
 import { UserPage } from './pages/UserPage.tsx';
 
+const basePath = import.meta.env.BASE_URL;
+
 const router = createBrowserRouter([
 	{
-		path: '/',
+		path: `${basePath}`,
 		element: <HomePage />
 	},
 	{
-		path: '/users/:userId',
+		path: `${basePath}users/:userId`,
 		element: <UserPage />
 	}
 ]);

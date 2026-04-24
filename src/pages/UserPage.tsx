@@ -4,6 +4,8 @@ import { useCache } from '../hooks/useCache';
 import { fetchUsers } from '../service/users';
 import type { User } from '../types/user';
 
+const basePath = import.meta.env.BASE_URL;
+
 export function UserPage() {
 	const { userId } = useParams();
 	const { data } = useCache<User[]>({ key: 'users', fetcher: fetchUsers });
@@ -44,7 +46,8 @@ export function UserPage() {
 					<dd>{user.company.name}</dd>
 				</dl>
 			</div>
-			<Link to="/" className="back-link">
+
+			<Link to={`${basePath}/`} className="back-link">
 				← Back to users
 			</Link>
 		</div>

@@ -4,6 +4,8 @@ import { useCache } from '../hooks/useCache';
 import { fetchUsers } from '../service/users';
 import type { User } from '../types/user';
 
+const basePath = import.meta.env.BASE_URL;
+
 export function HomePage() {
 	const { data, error, isLoading, refetch } = useCache<User[]>({ key: 'users', fetcher: fetchUsers });
 
@@ -22,7 +24,7 @@ export function HomePage() {
 				{data &&
 					data.map(user => (
 						<li key={user.id}>
-							<Link to={`/users/${user.id}`}>{user.name}</Link>
+							<Link to={`${basePath}/users/${user.id}`}>{user.name}</Link>
 						</li>
 					))}
 			</ul>

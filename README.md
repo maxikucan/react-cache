@@ -1,6 +1,6 @@
 # react-cache
 
-See demo in Vercel: [https://react-cache.vercel.app/](https://react-cache.vercel.app/)
+See demo in Github pages: [https://react-cache.vercel.app/](https://maxikucan.github.io/react-cache/)
 
 > ⚠️ Work in progress — learning experiment.
 

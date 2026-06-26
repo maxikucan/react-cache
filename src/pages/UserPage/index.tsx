@@ -1,8 +1,10 @@
 import { Link, useParams } from 'react-router';
 
-import { useCache } from '../hooks/useCache';
-import { fetchUsers } from '../service/users';
-import type { User } from '../types/user';
+import { useCache } from '../../hooks/useCache';
+import { fetchUsers } from '../../service/users';
+import type { User } from '../../types/user';
+import { basePath } from '../../utils/constants';
+import styles from './styles.module.css';
 
 export function UserPage() {
 	const { userId } = useParams();
@@ -12,16 +14,16 @@ export function UserPage() {
 
 	if (!user)
 		return (
-			<div className="page">
+			<div className={styles.page}>
 				<p>User not found</p>
 			</div>
 		);
 
 	return (
-		<div className="page">
-			<div className="user-card">
+		<div className={styles.page}>
+			<div className={styles.userCard}>
 				<h2>{user.name}</h2>
-				<dl className="user-details">
+				<dl className={styles.userDetails}>
 					<dt>Username</dt>
 					<dd>@{user.username}</dd>
 					<dt>Email</dt>
@@ -44,8 +46,8 @@ export function UserPage() {
 					<dd>{user.company.name}</dd>
 				</dl>
 			</div>
-			<Link to="/" className="back-link">
-				← Back to users
+			<Link to={`${basePath}`} className={styles.backLink}>
+				Back to users
 			</Link>
 		</div>
 	);

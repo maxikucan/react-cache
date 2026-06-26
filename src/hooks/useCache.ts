@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useCacheLog } from '../context/CacheLogContext';
+import { DEFAULT_TTL, useCacheTtl } from '../context/CacheTtlContext';
 
 interface IUseCacheParams<T> {
 	key: string;
@@ -21,10 +22,9 @@ type Options = {
 
 type CacheEntry<T> = {
 	data: T;
-	expiry: number;
+	createdAt: number;
 };
 
-const DEFAULT_TTL = 5 * 60 * 1000; // 5 minutes
 const cache = new Map<string, CacheEntry<unknown>>();
 
 export function useCache<T>(params: IUseCacheParams<T>): IUseCacheReturn<T> {
@@ -33,18 +33,21 @@ export function useCache<T>(params: IUseCacheParams<T>): IUseCacheReturn<T> {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const isMountedRef = useRef<boolean>(false);
 	const { addLog } = useCacheLog();
+	const { ttl } = useCacheTtl();
+	const effectiveTtl = params.options?.ttl ?? ttl ?? DEFAULT_TTL;
 
 	const fetchData = useCallback(
 		// Force ignores cache and fetches fresh data, otherwise it checks cache first
 		async (force = false) => {
 			const cachedEntry = cache.get(params.key) as CacheEntry<T> | undefined;
+			const expiry = cachedEntry ? cachedEntry.createdAt + effectiveTtl : 0;
 
-			if (!force && cachedEntry && cachedEntry.expiry > Date.now()) {
+			if (!force && cachedEntry && expiry > Date.now()) {
 				if (isMountedRef.current) {
 					setData(cachedEntry.data);
 					setError(null);
 					addLog(
-						`[${params.key}] Using cached data - Valid until ${new Date(cachedEntry.expiry).toLocaleTimeString([], { hour12: false })}.`,
+						`[${params.key}] Using cached data - Valid until ${new Date(expiry).toLocaleTimeString([], { hour12: false })}.`,
 						'cache'
 					);
 				}
@@ -62,7 +65,7 @@ export function useCache<T>(params: IUseCacheParams<T>): IUseCacheReturn<T> {
 
 				cache.set(params.key, {
 					data: result,
-					expiry: Date.now() + (params.options?.ttl || DEFAULT_TTL)
+					createdAt: Date.now()
 				});
 
 				if (isMountedRef.current) {
@@ -87,7 +90,7 @@ export function useCache<T>(params: IUseCacheParams<T>): IUseCacheReturn<T> {
 		},
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[params.key, params.fetcher, params.options?.ttl]
+		[params.key, params.fetcher, effectiveTtl]
 	);
 
 	const refetch = useCallback(async () => {

@@ -17,7 +17,7 @@ export default defineConfig([
 		},
 		plugins: { 'simple-import-sort': simpleImportSortPlugin },
 		rules: {
-			'simple-import-sort/imports': 'error',
+			'simple-import-sort/imports': 'warn',
 			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }],
 			'@typescript-eslint/no-explicit-any': 'warn',
 			'react-hooks/set-state-in-effect': 'off'

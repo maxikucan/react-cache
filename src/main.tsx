@@ -5,10 +5,10 @@ import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 
 import { CacheLogProvider } from './context/CacheLogContext.tsx';
-import { HomePage } from './pages/HomePage.tsx';
-import { UserPage } from './pages/UserPage.tsx';
-
-const basePath = import.meta.env.BASE_URL;
+import { CacheTtlProvider } from './context/CacheTtlContext.tsx';
+import { HomePage } from './pages/HomePage';
+import { UserPage } from './pages/UserPage';
+import { basePath } from './utils/constants.ts';
 
 const router = createBrowserRouter([
 	{
@@ -22,7 +22,9 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')!).render(
-	<CacheLogProvider>
-		<RouterProvider router={router} />
-	</CacheLogProvider>
+	<CacheTtlProvider>
+		<CacheLogProvider>
+			<RouterProvider router={router} />
+		</CacheLogProvider>
+	</CacheTtlProvider>
 );

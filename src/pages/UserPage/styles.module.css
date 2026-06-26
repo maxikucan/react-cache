@@ -1,0 +1,47 @@
+.page {
+	max-width: 480px;
+	margin: 64px auto;
+	padding: 0 16px;
+}
+
+.userCard {
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 10px;
+	padding: 24px;
+}
+
+.userCard h2 {
+	font-size: 1.2rem;
+	font-weight: 600;
+	margin-bottom: 16px;
+}
+
+.userDetails {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 8px 16px;
+	font-size: 0.9rem;
+}
+
+.userDetails dt {
+	color: #888;
+	font-weight: 500;
+}
+
+.userDetails dd a {
+	color: #1a3acc;
+	text-decoration: none;
+}
+
+.backLink {
+	display: inline-block;
+	margin-top: 16px;
+	font-size: 0.85rem;
+	color: #555;
+	text-decoration: none;
+}
+
+.backLink:hover {
+	color: #1a3acc;
+}

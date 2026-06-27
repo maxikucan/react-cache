@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useCacheLog } from '../context/CacheLogContext';
-import { DEFAULT_TTL, useCacheTtl } from '../context/CacheTtlContext';
+import { useCacheTtl } from '../context/CacheTtlContext';
+import { DEFAULT_TTL } from '../utils/constants';
 
 interface IUseCacheParams<T> {
 	key: string;
@@ -46,10 +47,7 @@ export function useCache<T>(params: IUseCacheParams<T>): IUseCacheReturn<T> {
 				if (isMountedRef.current) {
 					setData(cachedEntry.data);
 					setError(null);
-					addLog(
-						`[${params.key}] Using cached data - Valid until ${new Date(expiry).toLocaleTimeString([], { hour12: false })}.`,
-						'cache'
-					);
+					addLog(`[${params.key}] Using cached data - Valid until ${new Date(expiry).toLocaleTimeString([], { hour12: false })}.`, 'cache');
 				}
 
 				return;

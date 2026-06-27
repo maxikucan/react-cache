@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router';
 import { useCache } from '../../hooks/useCache';
 import { fetchUsers } from '../../service/users';
 import type { User } from '../../types/user';
-import { basePath } from '../../utils/constants';
+import { BASE_PATH } from '../../utils/constants';
 import styles from './styles.module.css';
 
 export function UserPage() {
@@ -46,7 +46,7 @@ export function UserPage() {
 					<dd>{user.company.name}</dd>
 				</dl>
 			</div>
-			<Link to={`${basePath}`} className={styles.backLink}>
+			<Link to={`${BASE_PATH}`} className={styles.backLink}>
 				Back to users
 			</Link>
 		</div>

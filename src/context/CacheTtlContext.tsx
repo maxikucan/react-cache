@@ -1,8 +1,7 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 
 import { CacheTtlPanel } from '../components/CacheTtlPanel';
-
-export const DEFAULT_TTL = 30 * 1000;
+import { DEFAULT_TTL } from '../utils/constants';
 
 interface ICacheTtlContext {
 	ttl: number;

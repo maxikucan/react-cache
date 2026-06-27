@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { useCache } from '../../hooks/useCache';
 import { fetchUsers } from '../../service/users';
 import type { User } from '../../types/user';
-import { basePath } from '../../utils/constants';
+import { BASE_PATH } from '../../utils/constants';
 import styles from './styles.module.css';
 
 export function HomePage() {
@@ -24,7 +24,7 @@ export function HomePage() {
 				{data &&
 					data.map(user => (
 						<li key={user.id}>
-							<Link to={`${basePath}/users/${user.id}`}>{user.name}</Link>
+							<Link to={`${BASE_PATH}/users/${user.id}`}>{user.name}</Link>
 						</li>
 					))}
 			</ul>

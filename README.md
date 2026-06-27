@@ -17,7 +17,7 @@ A small React app built to explore a custom in-memory caching hook.
 The core of the experiment lives in `src/hooks/useCache.ts`.
 
 - Stores fetched data in a module-level `Map` keyed by a string
-- Each entry has an expiry timestamp (default TTL: 5 minutes)
+- Each entry has an expiry timestamp
 - On subsequent renders, serves cached data if still valid — skipping the network request
 - Accepts an optional `ttl` (ms) to override the default
 
@@ -25,12 +25,6 @@ The core of the experiment lives in `src/hooks/useCache.ts`.
 const { data, error, isLoading } = useCache<User[]>({
 	key: 'users',
 	fetcher: fetchUsers,
-	options: { ttl: 60_000 } // optional, defaults to 5 min
+	options: { ttl: 60_000 } // optional, defaults to 30 seconds
 });
 ```
-
-## Stack
-
-- React + TypeScript
-- Vite
-- React Router

@@ -8,15 +8,15 @@ import { CacheLogProvider } from './context/CacheLogContext.tsx';
 import { CacheTtlProvider } from './context/CacheTtlContext.tsx';
 import { HomePage } from './pages/HomePage';
 import { UserPage } from './pages/UserPage';
-import { basePath } from './utils/constants.ts';
+import { BASE_PATH } from './utils/constants.ts';
 
 const router = createBrowserRouter([
 	{
-		path: `${basePath}`,
+		path: `${BASE_PATH}`,
 		element: <HomePage />
 	},
 	{
-		path: `${basePath}users/:userId`,
+		path: `${BASE_PATH}users/:userId`,
 		element: <UserPage />
 	}
 ]);
